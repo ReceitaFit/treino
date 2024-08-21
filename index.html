@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treino de 30 Dias</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #383737;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #799296;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    margin: 10px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#day-content {
+    text-align: left;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#day-content h2 {
+    margin-bottom: 15px;
+    color: #0a0a0a;
+}
+
+#day-content ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#day-content li {
+    margin-bottom: 10px;
+}
+
+#day-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+button {
+    flex: 1;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    #day-content {
+        font-size: 14px;
+    }
+
+    #day-content h2 {
+        font-size: 18px;
+    }
+
+    button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    #day-content {
+        font-size: 12px;
+    }
+
+    #day-content h2 {
+        font-size: 16px;
+    }
+
+    button {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+</style>
+<body>
+    <div class="container">
+        <h1>Treino de 30 Dias para Definir a Barriga</h1>
+        <div id="day-content">
+            <!-- O conteúdo do treino do dia será carregado aqui -->
+        </div>
+        <div class="navigation">
+            <button id="prevBtn" onclick="prevDay()" disabled>Anterior</button>
+            <button id="nextBtn" onclick="nextDay()">Próximo</button>
+             
+        </div>
+    </div>
+
+    <script>
+        const dayContent = [
+    // Semana 1, Dia 1-2
+    `<h2>Semana 1, Dia 1-2</h2>
+    <ul>
+        <li><h2>Cardio Leve (20-30 minutos): Caminhada rápida, corrida leve ou ciclismo.</li>
+        <li><h2>Abdominais Básicos:</h2></li>
+        <ul>
+            <li><h2>Abdominais tradicionais: 3 séries de 15 repetições.</h2></li>
+            <img src="images/abdominais.jpeg" alt="Abdominais Tradicionais">
+            <li><h2>Prancha: 3 séries de 20 segundos.</h2></li>
+            <img src="images/abdominais-tradicionais.jpeg" alt="Prancha">
+            <li><h2>Abdominal Reverso: 3 séries de 15 repetições.</h2></li>
+            <img src="images/abdominal-reverso.jpeg" alt="Abdominal Reverso">
+        </ul>
+    </ul>`,
+    // Semana 1, Dia 3-4
+    `<h2>Semana 1, Dia 3-4</h2>
+    <ul>
+        <li><h2>Cardio Leve (20-30 minutos).</li>
+        <li><h2>Fortalecimento do Core:</h2></li>
+        <ul>
+            <li><h2>Prancha Lateral: 3 séries de 15 segundos de cada lado.</h2></li>
+            <img src="images/Prancha Lateral.jpeg" alt="Prancha Lateral">
+            <li><h2>Mountain Climbers: 3 séries de 20 repetições.</h2></li>
+            <img src="images/mountain-climbers.jpeg" alt="Mountain Climbers">
+            <li><h2>Bicicleta no Chão: 3 séries de 15 repetições de cada lado.</h2></li>
+            <img src="images/bicicleta-no-chao.jpeg" alt="Bicicleta no Chão">
+        </ul>
+    </ul>`,
+    // Semana 1, Dia 5
+    `<h2>Semana 1, Dia 5</h2>
+    <ul>
+        <li><h2>Cardio Moderado (30 minutos): Corrida, natação ou ciclismo.</h2></li>
+        <img src="images/Cardio-Moderado.jpeg" alt="Cardio Moderado">
+    </ul>`,
+    // Semana 2, Dia 1-2
+    `<h2>Semana 2, Dia 1-2</h2>
+    <ul>
+        <li><h2>Cardio Moderado (30 minutos).</h2></li>
+        <li><h2>Treino Abdominal:</h2></li>
+        <ul>
+            <li><h2>V-ups: 3 séries de 15 repetições.</h2></li>
+            <img src="images/V-ups.jpeg" alt="V-ups">
+            <li><h2>Russian Twist: 3 séries de 20 repetições de cada lado.</h2></li>
+            <img src="images/Russian Twist.jpeg" alt="Russian Twist">
+            <li><h2>Prancha com Elevação de Perna: 3 séries de 10 repetições de cada lado.</h2></li>
+            <img src="images/prancha-elevacao-perna.jpeg" alt="Prancha com Elevação de Perna">
+        </ul>
+    </ul>`,
+    // Semana 2, Dia 3-4
+    `<h2>Semana 2, Dia 3-4</h2>
+    <ul>
+        <li><h2> <HIIT (15-20 minutos):Intercalar entre corrida rápida e caminhada.</h2></li>
+        <img src="images/hiit.jpeg" alt="HIIT">
+        <li><h2>Fortalecimento do Core:</h2></li>
+        <ul>
+            <li><h2><h2>Abdominal tradicional: 3 séries de 15 repetições de cada lado.</h2></li>
+            <img src="images/abdominais-tradicionais.jpeg" alt="Prancha com Toco">
+            <li><h2><h2>Abdominal Inferior com Elevação de Pernas: 3 séries de 15 repetições.</h2></li>
+            <img src="images/abdominal-inferior.jpeg" alt="Abdominal Inferior com Elevação de Pernas">
+        </ul>
+    </ul>`,
+    // Semana 2, Dia 5
+    `<h2>Semana 2, Dia 5</h2>
+    <ul>
+        <li><h2>Cardio Moderado (30-40 minutos).</h2></li>
+        <img src="images/Cardio-Moderado.jpeg" alt="Cardio Moderado">
+    </ul>`,
+    // Semana 3, Dia 1-2
+    `<h2>Semana 3, Dia 1-2</h2>
+    <ul>
+        <li><h2>HIIT (20 minutos).</h2></li>
+        <img src="images/hiit.jpeg" alt="HIIT">
+        <li><h2>Treino Abdominal Avançado:</h2></li>
+        <ul>
+            <li><h2>Dragon Flags: 3 séries de 10 repetições.</h2></li>
+            <img src="images/Dragon Flags.jpeg" alt="Dragon Flags">
+            <li><h2>Prancha com Toque de Ombro: 3 séries de 20 repetições.</h2></li>
+            <img src="images/Prancha com Toque de Ombro.jpeg" alt="Prancha com Toque de Ombro">
+            <li><h2>Elevação de Pernas Suspenso: 3 séries de 15 repetições.</h2></li>
+            <img src="images/Elevação de Pernas Suspenso.jpeg" alt="Elevação de Pernas Suspenso">
+        </ul>
+    </ul>`,
+    // Semana 3, Dia 3-4
+    `<h2>Semana 3, Dia 3-4</h2>
+    <ul>
+        <li><h2>Cardio Intensivo (40 minutos): Corrida em inclinação ou escadas.</h2></li>
+        <img src="images/Cardio Intensivo.jpeg" alt="Cardio Intensivo">
+        <li><h2>Fortalecimento do Core:</h2></li>
+        <ul>
+            <li><h2>Abdominal com Rotação: 3 séries de 15 repetições de cada lado.</h2></li>
+            <img src="images/Abdominal com Rotação.jpeg" alt="Abdominal com Rotação">
+            <li><h2>Sit-ups com Peso: 3 séries de 20 repetições.</h2></li>
+            <img src="images/Sit-ups.jpeg" alt="Sit-ups com Peso">
+        </ul>
+    </ul>`,
+    // Semana 3, Dia 5-6
+    `<h2>Semana 3, Dia 5-6</h2>
+    <ul>
+        <li><h2>Cardio Moderado (30-40 minutos).</h2></li>
+        <img src="images/Cardio Moderado.jpeg" alt="Cardio Moderado">
+        <li><h2>Treino Abdominal:</h2></li>
+        <ul>
+            <li><h2>Prancha Avançada (1 minuto): 3 séries.</h2></li>
+            <img src="images/Prancha Avançada.jpeg" alt="Prancha Avançada">
+            <li><h2>Abdominal com Bola de Estabilidade: 3 séries de 15 repetições.</h2></li>
+            <img src="images/Abdominal com Bola de Estabilidade.jpeg" alt="Abdominal com Bola de Estabilidade">
+        </ul>
+    </ul>`,
+    // Semana 4, Dia 1-2
+    `<h2>Semana 4, Dia 1-2</h2>
+    <ul>
+        <li><h2>HIIT Avançado (20-30 minutos).</h2></li>
+        <img src="images/HIIT Avançado.jpeg" alt="HIIT Avançado">
+        <li><h2>Treino Abdominal Completo:</h2></li>
+        <ul>
+            <li><h2>Abdominal com Elevação de Pernas: 3 séries de 20 repetições.</h2></li>
+            <img src="images/Abdominal com Elevação de Pernas.jpeg" alt="Abdominal com Elevação de Pernas">
+            <li><h2>Prancha Dinâmica: 3 séries de 1 minuto.</h2></li>
+            <img src="images/Prancha Dinâmica.jpeg" alt="Prancha Dinâmica">
+            <li><h2>Mountain Climbers Rápido: 3 séries de 30 repetições.</h2></li>
+            <img src="images/Mountain Climbers Rápido.jpeg" alt="Mountain Climbers Rápido">
+        </ul>
+    </ul>`,
+    // Semana 4, Dia 3-4
+    `<h2>Semana 4, Dia 3-4</h2>
+    <ul>
+        <li><h2>Cardio Intensivo (45 minutos): Ciclismo em alta intensidade ou corrida em terreno inclinado.</h2></li>
+        <img src="images/Cardio Intensivo.jpeg" alt="Cardio Intensivo">
+        <li><h2>Fortalecimento do Core:</h2></li>
+        <ul>
+            <li><h2>Sit-ups com Peso: 3 séries de 25 repetições.</h2></li>
+            <img src="images/Sit-ups com Peso.jpeg" alt="Sit-ups com Peso">
+            <li><h2>Prancha Lateral com Elevação de Quadril: 3 séries de 15 repetições de cada lado.</h2></li>
+            <img src="images/Prancha Lateral com Elevação de Quadril.jpeg" alt="Prancha Lateral com Elevação de Quadril">
+        </ul>
+    </ul>`,
+    // Semana 4, Dia 5-6
+    `<h2>Semana 4, Dia 5-6</h2>
+    <ul>
+        <li><h2>Cardio Moderado (30-40 minutos).</h2></li>
+        <img src="images/Cardio Moderado.jpeg" alt="Cardio Moderado">
+        <li><h2>Treino Abdominal Completo:</h2></li>
+        <ul>
+            <li><h2>Dragon Flags: 3 séries de 12 repetições.</h2></li>
+            <img src="images/Dragon Flags.jpeg" alt="Dragon Flags">
+            <li><h2>Russian Twist com Peso: 3 séries de 30 repetições de cada lado.</h2></li>
+            <img src="images/Russian Twist com Peso.jpeg" alt="Russian Twist com Peso">
+            <li><h2>Prancha com Elevação de Braço: 3 séries de 20 repetições de cada lado.</h2></li>
+            <img src="images/Prancha com Elevação de Braço.jpeg" alt="Prancha com Elevação de Braço">
+        </ul>
+    </ul>`
+];
+
+let currentDay = 0;
+
+function showDay(day) {
+    document.getElementById("day-content").innerHTML = dayContent[day];
+    document.getElementById("prevBtn").disabled = day === 0;
+    document.getElementById("nextBtn").disabled = day === dayContent.length - 1;
+}
+
+function prevDay() {
+    if (currentDay > 0) {
+        currentDay--;
+        showDay(currentDay);
+    }
+}
+
+function nextDay() {
+    if (currentDay < dayContent.length - 1) {
+        currentDay++;
+        showDay(currentDay);
+    }
+}
+
+// Exibe o primeiro dia ao carregar a página
+showDay(currentDay);
+
+    </script>
+</body>
+</html>
